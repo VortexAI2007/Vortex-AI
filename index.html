@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortex AI</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#111;
+color:white;
+display:flex;
+flex-direction:column;
+height:100vh;
+margin:0;
+}
+
+header{
+padding:15px;
+font-size:22px;
+text-align:center;
+background:#222;
+}
+
+#chat{
+flex:1;
+overflow:auto;
+padding:20px;
+}
+
+.message{
+margin:10px 0;
+}
+
+.user{
+color:#00ffcc;
+}
+
+.ai{
+color:#fff;
+}
+
+#inputArea{
+display:flex;
+padding:10px;
+background:#222;
+}
+
+input{
+flex:1;
+padding:10px;
+font-size:16px;
+}
+
+button{
+padding:10px;
+margin-left:5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>Vortex AI</header>
+
+<div id="chat"></div>
+
+<div id="inputArea">
+
+<input id="input" placeholder="Ask Vortex...">
+
+<button onclick="send()">Send</button>
+
+<button onclick="voice()">🎤</button>
+
+</div>
+
+<script>
+
+function send(){
+
+let input=document.getElementById("input")
+
+let text=input.value
+
+add("You: "+text,"user")
+
+reply(text)
+
+input.value=""
+
+}
+
+function add(text,type){
+
+let div=document.createElement("div")
+
+div.className="message "+type
+
+div.innerText=text
+
+document.getElementById("chat").appendChild(div)
+
+}
+
+function reply(text){
+
+let answer="I am Vortex AI. I'm still learning."
+
+add("Vortex: "+answer,"ai")
+
+}
+
+function voice(){
+
+let rec=new webkitSpeechRecognition()
+
+rec.lang="en-US"
+
+rec.onresult=function(e){
+
+let text=e.results[0][0].transcript
+
+document.getElementById("input").value=text
+
+}
+
+rec.start()
+
+}
+
+</script>
+
+</body>
+</html>

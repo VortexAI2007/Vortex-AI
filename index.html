@@ -106,7 +106,41 @@ document.getElementById("chat").appendChild(div)
 
 }
 
+async function <script>
 async function reply(text){
+  try{
+    const res = await fetch("https://twilight-math-c89f.abuashvili-nika2007.workers.dev",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+
+    let answer = "No response from AI";
+
+    // Responses API часто отдаёт текст тут
+    if (data.output_text) {
+      answer = data.output_text;
+    } else if (Array.isArray(data.output)) {
+      // или внутри output[].content[]
+      for (const item of data.output) {
+        if (item?.content) {
+          for (const c of item.content) {
+            if (c?.type === "output_text" && c?.text) answer += c.text;
+          }
+        }
+      }
+      answer = answer.replace(/^No response from AI/, "").trim() || answer;
+    }
+
+    add("Vortex: " + answer, "ai");
+
+  }catch(e){
+    add("Vortex: Error connecting to AI", "ai");
+  }
+}
+</script>
 
 try{
 
